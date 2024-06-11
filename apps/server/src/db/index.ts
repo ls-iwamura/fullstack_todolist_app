@@ -5,6 +5,7 @@ import {config} from 'dotenv';
 config();
 
 export const client = new pg.Client({
+  // eslint-disable-next-line turbo/no-undeclared-env-vars
   connectionString: process.env.DATABASE_URL ?? '',
 });
 
