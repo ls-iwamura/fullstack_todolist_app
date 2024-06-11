@@ -18,6 +18,11 @@
         "^lint"
       ]
     },
+    "fmt": {
+      "dependsOn": [
+        "^fmt"
+      ]
+    },
     "dev": {
       "cache": false,
       "persistent": true

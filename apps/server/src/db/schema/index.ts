@@ -1,20 +1,20 @@
-import { sql } from "drizzle-orm";
-import { text, serial, pgTable, varchar, date } from "drizzle-orm/pg-core";
+import {sql} from 'drizzle-orm';
+import {date, pgTable, serial, text, varchar} from 'drizzle-orm/pg-core';
 
-export const todos = pgTable("todos", {
-  id: serial("id").primaryKey(),
-  title: varchar("title", { length: 50 }).notNull(),
-  content: varchar("content", { length: 255 }),
-  status: text("status", {
-    enum: ["todo", "wip", "done", "pending", "canceled"],
+export const todos = pgTable('todos', {
+  id: serial('id').primaryKey(),
+  title: varchar('title', {length: 50}).notNull(),
+  content: varchar('content', {length: 255}),
+  status: text('status', {
+    enum: ['todo', 'wip', 'done', 'pending', 'canceled'],
   })
-    .default("todo")
+    .default('todo')
     .notNull(),
-  deadline: date("deadline", { mode: "string" }),
-  createdAt: date("created_at")
+  deadline: date('deadline', {mode: 'string'}),
+  createdAt: date('created_at')
     .default(sql`now()`)
     .notNull(),
-  updatedAt: date("updated_at")
+  updatedAt: date('updated_at')
     .default(sql`now()`)
     .notNull(),
 });

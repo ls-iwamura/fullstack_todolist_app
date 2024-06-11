@@ -1,14 +1,5 @@
 {
-  "compilerOptions": {
-    "target": "ESNext",
-    "module": "ESNext",
-    "moduleResolution": "Bundler",
-    "strict": true,
-    "skipLibCheck": true,
-    "types": [
-      "node"
-    ],
-    "jsx": "react-jsx",
-    "jsxImportSource": "hono/jsx",
-  }
+  "extends": "@repo/typescript-config/server.json",
+  "include": ["**/*.ts"],
+  "exclude": ["node_modules"]
 }

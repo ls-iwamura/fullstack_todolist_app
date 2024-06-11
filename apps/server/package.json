@@ -3,6 +3,9 @@
   "type": "module",
   "private": true,
   "scripts": {
+    "lint": "eslint src",
+    "lint:fix": "eslint src --fix",
+    "fmt": "prettier --write src",
     "dev": "tsx watch src/index.ts",
     "migrate:gen": "drizzle-kit generate",
     "migrate": "tsx ./src/db/migrate.ts",
@@ -17,9 +20,14 @@
     "pg": "^8.11.5"
   },
   "devDependencies": {
+    "@repo/eslint-config": "workspace:*",
+    "@repo/prettier-config": "workspace:*",
+    "@repo/typescript-config": "workspace:*",
     "@types/node": "^20.11.17",
     "@types/pg": "^8.11.6",
     "drizzle-kit": "^0.21.4",
+    "eslint": "^8",
+    "prettier": "^3.2.5",
     "tsx": "^4.7.1"
   }
 }
