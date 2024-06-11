@@ -8,6 +8,7 @@ module.exports = {
     "eslint:recommended",
     "prettier",
     require.resolve("@vercel/style-guide/eslint/next"),
+    "plugin:react-hooks/recommended",
     "turbo",
   ],
   globals: {
@@ -18,7 +19,7 @@ module.exports = {
     node: true,
     browser: true,
   },
-  plugins: ["only-warn"],
+  plugins: ["only-warn", "import"],
   settings: {
     "import/resolver": {
       typescript: {
@@ -32,4 +33,59 @@ module.exports = {
     "node_modules/",
   ],
   overrides: [{ files: ["*.js?(x)", "*.ts?(x)"] }],
+  rules: {
+    "import/order": [
+      "error",
+      {
+        groups: [
+          "builtin",
+          "external",
+          "internal",
+          ["parent", "sibling"],
+          "object",
+          "type",
+          "index",
+        ],
+        "newlines-between": "always",
+        pathGroupsExcludedImportTypes: ["builtin"],
+        pathGroups: [
+          {
+            pattern: "@/utils/**",
+            group: "internal",
+            position: "before",
+          },
+          {
+            pattern: "@/libs/**",
+            group: "internal",
+            position: "before",
+          },
+          {
+            pattern: "@/hooks/**",
+            group: "internal",
+            position: "before",
+          },
+          {
+            pattern: "@/components/**",
+            group: "internal",
+            position: "before",
+          },
+          {
+            pattern: "@/const/**",
+            group: "internal",
+            position: "before",
+          },
+          {
+            pattern: "@/types/**",
+            group: "internal",
+            position: "before",
+          },
+        ],
+        alphabetize: {
+          order: "asc",
+        },
+      },
+    ],
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "error",
+  },
 };
