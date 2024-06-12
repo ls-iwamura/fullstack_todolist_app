@@ -19,7 +19,7 @@ module.exports = {
     node: true,
     browser: true,
   },
-  plugins: ["only-warn", "import"],
+  plugins: ["only-warn", "import", "react-compiler"],
   settings: {
     "import/resolver": {
       typescript: {
@@ -87,5 +87,6 @@ module.exports = {
     ],
     "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "error",
+    "react-compiler/react-compiler": "error",
   },
 };
