@@ -1,3 +1,7 @@
+import { TodoContainer } from "@/features/todos/components/TodoContainer/TodoContainer";
+
 export default function Home() {
-  return <main></main>;
+  return <main>
+    <TodoContainer/>
+  </main>;
 }
