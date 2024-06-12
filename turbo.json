@@ -12,6 +12,9 @@
     "lint:fix": {
       "dependsOn": ["^lint:fix"]
     },
+    "fmt:check": {
+      "dependsOn": ["^fmt:check"]
+    },
     "fmt": {
       "dependsOn": ["^fmt"]
     },

@@ -5,6 +5,7 @@
   "scripts": {
     "lint": "eslint src",
     "lint:fix": "eslint src --fix",
+    "fmt:check": "prettier src",
     "fmt": "prettier --write src",
     "dev": "tsx watch src/index.ts",
     "migrate:gen": "drizzle-kit generate",
