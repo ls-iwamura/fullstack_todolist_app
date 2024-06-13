@@ -13,11 +13,7 @@ app.use(
   '/*',
   cors({
     origin: 'http://localhost:3000',
-    allowHeaders: ['X-Custom-Header', 'Upgrade-Insecure-Requests'],
     allowMethods: ['POST', 'GET', 'OPTIONS'],
-    exposeHeaders: ['Content-Length', 'X-Kuma-Revision'],
-    maxAge: 600,
-    credentials: true,
   }),
 );
 app.get('/', c => {
@@ -37,7 +33,7 @@ app.post('/todos', async c => {
   const result = await db.insert(todos).values({
     title: params.title,
     content: params.content,
-    deadline: params.deadline,
+    // deadline: params.deadline,
   });
   return c.json(result);
 });
