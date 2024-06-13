@@ -12,7 +12,7 @@ app.use('/api/*', cors());
 app.use(
   '/*',
   cors({
-    origin: 'http://localhost:8080',
+    origin: 'http://localhost:3000',
     allowHeaders: ['X-Custom-Header', 'Upgrade-Insecure-Requests'],
     allowMethods: ['POST', 'GET', 'OPTIONS'],
     exposeHeaders: ['Content-Length', 'X-Kuma-Revision'],
@@ -26,7 +26,10 @@ app.get('/', c => {
 
 app.get('/todos', async c => {
   const data = await db.select().from(todos);
-  return c.json(data);
+  const response = {
+    items: data,
+  };
+  return c.json(response);
 });
 
 app.post('/todos', async c => {
