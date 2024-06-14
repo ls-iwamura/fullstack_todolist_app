@@ -12,7 +12,7 @@ type Props = {
 };
 
 export const TodoListItem = (props: Props) => {
-  const [mode, setMode] = useState<'view' | 'edit'>('view');
+  const [_, setMode] = useState<'view' | 'edit'>('view');
   const statusLabelColor = (() => {
     switch (props.todo.status) {
       case 'todo':
