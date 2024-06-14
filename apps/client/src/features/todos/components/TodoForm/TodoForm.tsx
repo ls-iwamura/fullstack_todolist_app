@@ -1,32 +1,65 @@
 import clsx from 'clsx';
-import React, {useActionState} from 'react';
+import React, {useState} from 'react';
 
 import {Button} from '@/components/ui/Button/Button';
+import {DateInput} from '@/components/ui/DateInput/DateInput';
+import {TextArea} from '@/components/ui/TextArea/TextArea';
+import {TextInput} from '@/components/ui/TextInput/TextInput';
 
-import {addTodo} from '../../api/addTodo';
 import {AddTodoRequest} from '../../models/addTodo';
 
-export const TodoForm = () => {
-  const [inputState, runAction, isPending] = useActionState<
-    AddTodoRequest | null,
-    FormData
-  >(async (_, formData) => {
-    const req = Object.fromEntries(formData.entries());
-    const res = await addTodo(req);
-    return res;
-  }, null);
+type Props = {
+  isPending: boolean;
+  onSubmit: (values: AddTodoRequest) => void;
+};
+
+export const TodoForm = (props: Props) => {
+  const [inputState, setInputState] = useState<AddTodoRequest>({
+    title: '',
+    content: '',
+    deadline: '',
+  });
   return (
     <div>
-      <form action={runAction}>
-        <input type="text" name="title" placeholder="Title" />
-        <textarea name="content" placeholder="Description" />
-        <input type="date" name="deadline" />
+      <form
+        onSubmit={e => {
+          e.preventDefault();
+          props.onSubmit(inputState);
+        }}
+      >
+        <TextInput
+          type="text"
+          name="title"
+          placeholder="Title"
+          value={inputState.title}
+          onChange={e =>
+            setInputState(prev => ({...prev, title: e.target.value}))
+          }
+          disabled={props.isPending}
+        />
+        <TextArea
+          name="content"
+          placeholder="Description"
+          value={inputState.content}
+          onChange={e =>
+            setInputState(prev => ({...prev, content: e.target.value}))
+          }
+          disabled={props.isPending}
+        />
+        <DateInput
+          name="deadline"
+          value={inputState.deadline}
+          onChange={e =>
+            setInputState(prev => ({...prev, deadline: e.target.value}))
+          }
+          disabled={props.isPending}
+        />
         <Button
           className={clsx('w-14', 'bg-green-500', 'text-white')}
           type="submit"
-          disabled={isPending}
+          disabled={props.isPending}
         >
-          {isPending ? '...' : 'Save'}
+          {props.isPending ? '...' : 'Save'}
         </Button>
       </form>
     </div>

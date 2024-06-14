@@ -1,21 +1,34 @@
 import clsx from 'clsx';
-import {Suspense} from 'react';
 
 import {SectionTitle} from '@/components/ui/SectionTitle/SectionTitle';
 
-import {getTodoList} from '../../api/getTodoList';
+import {useGetTodoList} from '@/features/todos/hooks/useGetTodoList';
+import {useRemoveTodoMutation} from '@/features/todos/hooks/useRemoveTodoMutation';
+
+import {useAddTodoMutation} from '../../hooks/useAddTodoMutation';
+import {AddTodoRequest} from '../../models/addTodo';
 import {TodoForm} from '../TodoForm/TodoForm';
 import {TodoList} from '../TodoList/TodoList';
 
 export const TodoContainer = () => {
-  const todoListLoader = getTodoList();
+  const {data} = useGetTodoList();
+  const {trigger: addTrigger, isMutating: addIsMutating} = useAddTodoMutation();
+  const {trigger: removeTrigger} = useRemoveTodoMutation();
+  const handleSubmit = async (values: AddTodoRequest) => {
+    addTrigger(values);
+  };
+  const handleRemove = async (id: string) => {
+    removeTrigger(id);
+  };
   return (
-    <div className={clsx("w-1/3", 'mx-auto', 'mt-5')}>
+    <div className={clsx('w-1/3', 'mx-auto', 'mt-5')}>
       <SectionTitle className={clsx('text-xl')}>Todo List</SectionTitle>
-      <TodoForm />
-      <Suspense fallback={'Loading...'}>
-        <TodoList todoListLoader={todoListLoader} />
-      </Suspense>
+      <TodoForm onSubmit={handleSubmit} isPending={addIsMutating} />
+      {data == null ? (
+        <div>Loading...</div>
+      ) : (
+        <TodoList data={data} onRemove={handleRemove} />
+      )}
     </div>
   );
 };

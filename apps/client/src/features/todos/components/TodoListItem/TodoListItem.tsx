@@ -8,6 +8,7 @@ import {TodoListResponse} from '../../models/todoList';
 type Props = {
   todo: TodoListResponse['items'][number];
   className?: string;
+  onRemove: (id: string) => void;
 };
 
 export const TodoListItem = (props: Props) => {
@@ -73,7 +74,7 @@ export const TodoListItem = (props: Props) => {
               'hover:opacity-50',
               'w-10',
             )}
-            onClick={() => {}}
+            onClick={() => props.onRemove(props.todo.id)}
           >
             ✘
           </Button>

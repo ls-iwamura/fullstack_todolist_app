@@ -5,17 +5,21 @@ import {TodoListResponse} from '@/features/todos/models/todoList';
 import {TodoListItem} from '../TodoListItem/TodoListItem';
 
 type Props = {
-  todoListLoader: Promise<TodoListResponse>;
+  data: TodoListResponse;
+  onRemove: (id: string) => void;
 };
 
 export const TodoList = (props: Props) => {
-  const todoListData = use(props.todoListLoader);
   return (
     <div>
       <ul>
-        {todoListData.items.map(todo => (
+        {props.data.items.map(todo => (
           <li key={todo.id}>
-            <TodoListItem todo={todo} className="mt-6" />
+            <TodoListItem
+              todo={todo}
+              className="mt-6"
+              onRemove={props.onRemove}
+            />
           </li>
         ))}
       </ul>
