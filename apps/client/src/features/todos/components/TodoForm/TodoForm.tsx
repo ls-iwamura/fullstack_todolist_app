@@ -25,8 +25,9 @@ export const TodoForm = () => {
       <form
         onSubmit={e => {
           e.preventDefault();
-          trigger(inputState);
-          setInputState(initialInputState);
+          trigger(inputState, {
+            onSuccess: () => setInputState(initialInputState),
+          });
         }}
         className={clsx(
           'flex',

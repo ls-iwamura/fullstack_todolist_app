@@ -2,13 +2,13 @@ import clsx from 'clsx';
 import React, {useState} from 'react';
 
 import {Button} from '@/components/ui/Button/Button';
+import {SelectBox} from '@/components/ui/SelectBox/SelectBox';
+import {TextInput} from '@/components/ui/TextInput/TextInput';
 
 import {useRemoveTodoMutation} from '@/features/todos/hooks/useRemoveTodoMutation';
 
-import {TodoListResponse} from '../../models/todoList';
-import {SelectBox} from '@/components/ui/SelectBox/SelectBox';
-import {TextInput} from '@/components/ui/TextInput/TextInput';
 import {useUpdateTodoMutation} from '../../hooks/useUpdateTodoMutation';
+import {TodoListResponse} from '../../models/todoList';
 
 type Props = {
   todo: TodoListResponse['items'][number];
