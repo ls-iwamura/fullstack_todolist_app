@@ -7,7 +7,7 @@ export const TextInput = ({className, ...props}: Props) => {
     <input
       className={clsx(
         'border-2',
-        'border-gray-400',
+        'border-gray-300',
         'px-2',
         'py-1',
         'border-solid',

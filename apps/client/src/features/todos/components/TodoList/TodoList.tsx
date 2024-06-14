@@ -7,7 +7,6 @@ import {TodoListItem} from '../TodoListItem/TodoListItem';
 
 type Props = {
   data: TodoListResponse;
-  onRemove: (id: string) => void;
   className?: string;
 };
 
@@ -25,7 +24,7 @@ export const TodoList = (props: Props) => {
       <ul className={clsx("flex", "flex-col", "gap-4")}>
         {props.data.items.map(todo => (
           <li key={todo.id}>
-            <TodoListItem todo={todo} onRemove={props.onRemove} />
+            <TodoListItem todo={todo}  />
           </li>
         ))}
       </ul>

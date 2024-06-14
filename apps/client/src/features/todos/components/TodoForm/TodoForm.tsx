@@ -1,30 +1,32 @@
 import clsx from 'clsx';
-import React, {useState} from 'react';
+import {useState} from 'react';
 
 import {Button} from '@/components/ui/Button/Button';
 import {DateInput} from '@/components/ui/DateInput/DateInput';
 import {TextArea} from '@/components/ui/TextArea/TextArea';
 import {TextInput} from '@/components/ui/TextInput/TextInput';
 
+import {useAddTodoMutation} from '@/features/todos/hooks/useAddTodoMutation';
+
 import {AddTodoRequest} from '../../models/addTodo';
 
-type Props = {
-  isPending: boolean;
-  onSubmit: (values: AddTodoRequest) => void;
+const initialInputState: AddTodoRequest = {
+  title: '',
+  content: '',
+  deadline: '',
 };
 
-export const TodoForm = (props: Props) => {
-  const [inputState, setInputState] = useState<AddTodoRequest>({
-    title: '',
-    content: '',
-    deadline: '',
-  });
+export const TodoForm = () => {
+  const [inputState, setInputState] =
+    useState<AddTodoRequest>(initialInputState);
+  const {trigger, isMutating} = useAddTodoMutation();
   return (
     <div>
       <form
         onSubmit={e => {
           e.preventDefault();
-          props.onSubmit(inputState);
+          trigger(inputState);
+          setInputState(initialInputState);
         }}
         className={clsx(
           'flex',
@@ -45,7 +47,7 @@ export const TodoForm = (props: Props) => {
             onChange={e =>
               setInputState(prev => ({...prev, title: e.target.value}))
             }
-            disabled={props.isPending}
+            disabled={isMutating}
             className={clsx('w-full')}
           />
           <TextArea
@@ -55,7 +57,7 @@ export const TodoForm = (props: Props) => {
             onChange={e =>
               setInputState(prev => ({...prev, content: e.target.value}))
             }
-            disabled={props.isPending}
+            disabled={isMutating}
             className={clsx('w-full')}
           />
           <DateInput
@@ -64,7 +66,7 @@ export const TodoForm = (props: Props) => {
             onChange={e =>
               setInputState(prev => ({...prev, deadline: e.target.value}))
             }
-            disabled={props.isPending}
+            disabled={isMutating}
             className={clsx('w-full')}
           />
         </div>
@@ -72,9 +74,9 @@ export const TodoForm = (props: Props) => {
           <Button
             className={clsx('w-14', 'bg-green-500', 'text-white')}
             type="submit"
-            disabled={props.isPending}
+            disabled={isMutating}
           >
-            {props.isPending ? '...' : 'Save'}
+            {isMutating ? '...' : 'Save'}
           </Button>
         </div>
       </form>

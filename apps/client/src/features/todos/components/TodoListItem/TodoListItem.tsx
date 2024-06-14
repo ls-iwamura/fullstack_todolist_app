@@ -3,16 +3,44 @@ import React, {useState} from 'react';
 
 import {Button} from '@/components/ui/Button/Button';
 
+import {useRemoveTodoMutation} from '@/features/todos/hooks/useRemoveTodoMutation';
+
 import {TodoListResponse} from '../../models/todoList';
+import {SelectBox} from '@/components/ui/SelectBox/SelectBox';
+import {TextInput} from '@/components/ui/TextInput/TextInput';
+import {useUpdateTodoMutation} from '../../hooks/useUpdateTodoMutation';
 
 type Props = {
   todo: TodoListResponse['items'][number];
   className?: string;
-  onRemove: (id: string) => void;
 };
 
 export const TodoListItem = (props: Props) => {
-  const [_, setMode] = useState<'view' | 'edit'>('view');
+  const [mode, setMode] = useState<'view' | 'edit'>('view');
+
+  if (mode === 'edit') {
+    return (
+      <TodoListItemEditMode
+        todo={props.todo}
+        className={props.className}
+        changeMode={() => setMode('view')}
+      />
+    );
+  }
+  return (
+    <TodoListItemViewMode
+      todo={props.todo}
+      className={props.className}
+      changeMode={() => setMode('edit')}
+    />
+  );
+};
+
+const TodoListItemViewMode = (props: Props & {changeMode: () => void}) => {
+  const {trigger, isMutating} = useRemoveTodoMutation();
+  const handleRemove = async () => {
+    trigger(props.todo.id);
+  };
   const statusLabelColor = (() => {
     switch (props.todo.status) {
       case 'todo':
@@ -39,8 +67,8 @@ export const TodoListItem = (props: Props) => {
         'justify-between',
         'rounded-md',
         'p-4',
-        "border-2",
-        "border-gray-300",
+        'border-2',
+        'border-gray-300',
         props.className,
       )}
     >
@@ -65,9 +93,8 @@ export const TodoListItem = (props: Props) => {
               'hover:opacity-50',
               'w-12',
             )}
-            onClick={() => {
-              setMode('edit');
-            }}
+            onClick={props.changeMode}
+            disabled={isMutating}
           >
             Edit
           </Button>
@@ -78,12 +105,96 @@ export const TodoListItem = (props: Props) => {
               'hover:opacity-50',
               'w-10',
             )}
-            onClick={() => props.onRemove(props.todo.id)}
+            onClick={handleRemove}
+            disabled={isMutating}
           >
-            ✘
+            {isMutating ? '...' : '✘'}
           </Button>
         </div>
       </div>
     </div>
+  );
+};
+
+const TodoListItemEditMode = (props: Props & {changeMode: () => void}) => {
+  const {trigger, isMutating} = useUpdateTodoMutation();
+  const [inputState, setInputState] = useState({
+    title: props.todo.title,
+    content: props.todo.content,
+    status: props.todo.status,
+    deadline: props.todo.deadline,
+  });
+  return (
+    <form
+      className={clsx(
+        'flex',
+        'gap-10',
+        'items-center',
+        'justify-between',
+        'rounded-md',
+        'p-4',
+        'border-2',
+        'border-gray-300',
+        props.className,
+      )}
+      onSubmit={e => {
+        e.preventDefault();
+        trigger(
+          {...inputState, id: props.todo.id},
+          {onSuccess: props.changeMode},
+        );
+      }}
+    >
+      <TextInput
+        value={inputState.title}
+        onChange={e =>
+          setInputState(prev => ({...prev, title: e.target.value}))
+        }
+      />
+      <div className={clsx('flex', 'items-center', 'gap-4')}>
+        <SelectBox
+          options={[
+            {label: 'todo', value: 'todo'},
+            {label: 'wip', value: 'wip'},
+            {label: 'done', value: 'done'},
+            {label: 'pending', value: 'pending'},
+            {label: 'canceled', value: 'canceled'},
+          ]}
+          onChange={e =>
+            setInputState(prev => ({
+              ...prev,
+              status: e.target.value as (typeof inputState)['status'],
+            }))
+          }
+        />
+        <div className={clsx('flex', 'items-center', 'gap-2')}>
+          <Button
+            type="submit"
+            className={clsx(
+              'bg-green-500',
+              'text-white',
+              'hover:opacity-50',
+              'w-12',
+            )}
+            disabled={isMutating}
+          >
+            Save
+          </Button>
+          <Button
+            type="button"
+            className={clsx(
+              'bg-gray-500',
+              'text-white',
+              'hover:opacity-50',
+              'w-12',
+            )}
+            onClick={props.changeMode}
+            disabled={isMutating}
+          >
+            Cancel
+          </Button>
+        </div>
+      </div>
+    </form>
   );
 };
