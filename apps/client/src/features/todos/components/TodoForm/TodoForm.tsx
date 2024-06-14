@@ -1,23 +1,20 @@
-import {Button} from '@/components/ui/Button/Button';
 import clsx from 'clsx';
 import React, {useActionState} from 'react';
 
-export const TodoForm = () => {
-  const [_, runAction, isPending] = useActionState(
-    async (_: unknown, formData: FormData) => {
-      console.log(Object.fromEntries(formData));
+import {Button} from '@/components/ui/Button/Button';
 
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/todos`, {
-        method: 'POST',
-        body: JSON.stringify(Object.fromEntries(formData)),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-      return res.json();
-    },
-    null,
-  );
+import {addTodo} from '../../api/addTodo';
+import {AddTodoRequest} from '../../models/addTodo';
+
+export const TodoForm = () => {
+  const [inputState, runAction, isPending] = useActionState<
+    AddTodoRequest | null,
+    FormData
+  >(async (_, formData) => {
+    const req = Object.fromEntries(formData.entries());
+    const res = await addTodo(req);
+    return res;
+  }, null);
   return (
     <div>
       <form action={runAction}>
