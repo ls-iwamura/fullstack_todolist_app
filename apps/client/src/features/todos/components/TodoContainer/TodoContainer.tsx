@@ -21,13 +21,13 @@ export const TodoContainer = () => {
     removeTrigger(id);
   };
   return (
-    <div className={clsx('w-1/3', 'mx-auto', 'mt-5')}>
-      <SectionTitle className={clsx('text-xl')}>Todo List</SectionTitle>
+    <div className={clsx('w-1/2', 'mx-auto', 'mt-5')}>
+      <SectionTitle className={clsx('text-xl', "mb-4")}>Todo List</SectionTitle>
       <TodoForm onSubmit={handleSubmit} isPending={addIsMutating} />
       {data == null ? (
         <div>Loading...</div>
       ) : (
-        <TodoList data={data} onRemove={handleRemove} />
+        <TodoList data={data} onRemove={handleRemove} className="mt-6" />
       )}
     </div>
   );

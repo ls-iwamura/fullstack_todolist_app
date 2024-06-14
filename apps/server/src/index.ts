@@ -33,7 +33,7 @@ app.post('/todos', async c => {
   const result = await db.insert(todos).values({
     title: params.title,
     content: params.content,
-    // deadline: params.deadline,
+    deadline: params.deadline,
   });
   return c.json(result);
 });

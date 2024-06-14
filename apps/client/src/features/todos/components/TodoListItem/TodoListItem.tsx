@@ -37,6 +37,10 @@ export const TodoListItem = (props: Props) => {
         'gap-10',
         'items-center',
         'justify-between',
+        'rounded-md',
+        'p-4',
+        "border-2",
+        "border-gray-300",
         props.className,
       )}
     >
